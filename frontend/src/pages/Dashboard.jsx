@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import api from "../api/client";
+import KPICard from "../components/KPICard";
+import LoadingState from "../components/ui/LoadingState";
+import StatusMessage from "../components/ui/StatusMessage";
 
 const KPI_FIELDS = [
-  { key: "assetsAvailable", label: "Available Assets" },
-  { key: "assetsAllocated", label: "Allocated Assets" },
-  { key: "maintenanceToday", label: "Maintenance Today" },
-  { key: "activeBookings", label: "Active Bookings" },
-  { key: "pendingTransfers", label: "Pending Transfers" },
-  { key: "upcomingReturns", label: "Upcoming Returns" },
+  { key: "assetsAvailable", label: "Available Assets", icon: "📦", color: "#2563eb", description: "Ready for allocation" },
+  { key: "assetsAllocated", label: "Allocated Assets", icon: "🔐", color: "#7c3aed", description: "Currently assigned" },
+  { key: "maintenanceToday", label: "Maintenance Today", icon: "🛠", color: "#ea580c", description: "Open service work" },
+  { key: "activeBookings", label: "Active Bookings", icon: "🗓", color: "#0f766e", description: "Live reservations" },
+  { key: "pendingTransfers", label: "Pending Transfers", icon: "🔁", color: "#db2777", description: "Awaiting movement" },
+  { key: "upcomingReturns", label: "Upcoming Returns", icon: "↩", color: "#0891b2", description: "Due soon" },
 ];
 
 export default function Dashboard() {
@@ -55,14 +58,9 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {isLoading && (
-        <div className="loading-state" role="status" aria-live="polite">
-          <span className="spinner" aria-hidden="true" />
-          <p>Loading dashboard metrics…</p>
-        </div>
-      )}
+      {isLoading && <LoadingState message="Loading dashboard metrics…" />}
 
-      {error && <p className="form-error">{error}</p>}
+      {error && <StatusMessage type="error">{error}</StatusMessage>}
 
       {kpis && (
         <>
@@ -77,11 +75,8 @@ export default function Dashboard() {
           </div>
 
           <div className="kpi-grid">
-            {KPI_FIELDS.map(({ key, label }) => (
-              <article className="kpi-card" key={key}>
-                <div className="kpi-value">{kpis[key] ?? 0}</div>
-                <div className="kpi-label">{label}</div>
-              </article>
+            {KPI_FIELDS.map(({ key, label, icon, color, description }) => (
+              <KPICard key={key} title={label} value={kpis[key] ?? 0} icon={icon} color={color} description={description} />
             ))}
           </div>
         </>

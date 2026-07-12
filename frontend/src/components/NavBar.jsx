@@ -1,26 +1,59 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+
+const navItems = [
+  { to: "/dashboard", label: "Dashboard", icon: "◉" },
+  { to: "/bookings", label: "Bookings", icon: "🗓" },
+  { to: "/maintenance", label: "Maintenance", icon: "🛠" },
+  { to: "/audits", label: "Audits", icon: "✓" },
+];
 
 export default function NavBar() {
   const { user, logout } = useAuth();
   if (!user) return null;
 
   return (
-    <nav className="navbar">
-      <div className="navbar-brand">AssetFlow</div>
-      <div className="navbar-links">
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/assets">Assets</Link>
-        <Link to="/allocations">Allocations</Link>
-        <Link to="/bookings">Bookings</Link>
-        <Link to="/maintenance">Maintenance</Link>
-        <Link to="/audits">Audits</Link>
-        {user.role === "Admin" && <Link to="/org-setup">Org Setup</Link>}
+    <aside className="sidebar">
+      <div className="sidebar-brand">
+        <div className="brand-mark">AF</div>
+        <div>
+          <h2>AssetFlow</h2>
+          <p>Operations Hub</p>
+        </div>
       </div>
-      <div className="navbar-user">
-        <span>{user.name} ({user.role})</span>
-        <button onClick={logout}>Logout</button>
+
+      <nav className="sidebar-links" aria-label="Primary">
+        {navItems.map((item) => (
+          <NavLink key={item.to} to={item.to} className="sidebar-link">
+            <span className="sidebar-icon">{item.icon}</span>
+            <span>{item.label}</span>
+          </NavLink>
+        ))}
+        <NavLink to="/assets" className="sidebar-link">
+          <span className="sidebar-icon">📦</span>
+          <span>Assets</span>
+        </NavLink>
+        <NavLink to="/allocations" className="sidebar-link">
+          <span className="sidebar-icon">🔁</span>
+          <span>Allocations</span>
+        </NavLink>
+        {user.role === "Admin" && (
+          <NavLink to="/org-setup" className="sidebar-link">
+            <span className="sidebar-icon">⚙️</span>
+            <span>Org Setup</span>
+          </NavLink>
+        )}
+      </nav>
+
+      <div className="sidebar-user">
+        <div>
+          <strong>{user.name}</strong>
+          <p>{user.role}</p>
+        </div>
+        <button className="logout-btn" onClick={logout}>
+          Logout
+        </button>
       </div>
-    </nav>
+    </aside>
   );
 }

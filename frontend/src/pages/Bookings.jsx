@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import api from "../api/client";
+import LoadingState from "../components/ui/LoadingState";
+import StatusMessage from "../components/ui/StatusMessage";
 import "./Bookings.css";
 
 const emptyForm = {
@@ -232,9 +234,9 @@ export default function Bookings() {
             </div>
           </form>
 
-          {error && <p className="error-message">{error}</p>}
-          {success && <p className="success-message">{success}</p>}
-          {isLoadingAssets && <p className="status-message">Loading assets…</p>}
+          {error && <StatusMessage type="error">{error}</StatusMessage>}
+          {success && <StatusMessage type="success">{success}</StatusMessage>}
+          {isLoadingAssets && <LoadingState message="Loading assets…" />}
         </div>
 
         <div className="card">
@@ -250,7 +252,7 @@ export default function Bookings() {
           </div>
 
           {isLoadingBookings ? (
-            <p className="status-message">Loading bookings…</p>
+            <LoadingState message="Loading bookings…" />
           ) : (
             <div className="table-wrap">
               <table className="bookings-table">

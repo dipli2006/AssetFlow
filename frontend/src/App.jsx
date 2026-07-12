@@ -15,10 +15,10 @@ import Audits from "./pages/Audits";
 
 function Shell({ children }) {
   return (
-    <>
+    <div className="app-shell">
       <NavBar />
-      <main>{children}</main>
-    </>
+      <main className="app-main">{children}</main>
+    </div>
   );
 }
 
@@ -32,7 +32,7 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomeRedirect />} />
+          <Route path="/" element={<RoleRoute><Shell><Dashboard /></Shell></RoleRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 

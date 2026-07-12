@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api/client";
+import LoadingState from "../components/ui/LoadingState";
+import StatusMessage from "../components/ui/StatusMessage";
 import "./Maintenance.css";
 
 const emptyForm = {
@@ -178,15 +180,15 @@ export default function Maintenance() {
             </div>
           </form>
 
-          {error && <p className="error-message">{error}</p>}
-          {success && <p className="success-message">{success}</p>}
-          {isLoadingAssets && <p className="status-message">Loading assets…</p>}
+          {error && <StatusMessage type="error">{error}</StatusMessage>}
+          {success && <StatusMessage type="success">{success}</StatusMessage>}
+          {isLoadingAssets && <LoadingState message="Loading assets…" />}
         </div>
 
         <div className="card">
           <h2>Maintenance requests</h2>
           {isLoadingRequests ? (
-            <p className="status-message">Loading requests…</p>
+            <LoadingState message="Loading requests…" />
           ) : (
             <div className="table-wrap">
               <table className="maintenance-table">
